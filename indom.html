@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Coronavirus Live Stats</h1>
+    <p>Infetti Nel Mondo:<span id="Sp">0</span></p>
+    <p>Morti Nel Mondo:<span id="Sp-1">0</span></p>
+    <p>Ricoverati Nel Mondo:<span id="Sp-2">0</span></p>
+    <p>Infetti in Italia:<span id="Sp-3">0</span></p>
+    <p>Morti in Italia:<span id="Sp-4">0</span></p>
+    <h2>Dicci Cosa Ne Pensi Di Questo Virus Lascinado Un Commento</h2>
+    
+<div class="form">
+        Name: <input type="text" id="name"><br>
+        Date: <input type="date" id="date"><br>
+        Body: <textarea row="5" col="30" id="body/text"></textarea>
+</div>
+        <div id="container">
+
+
+        </div>
+
+
+
+ 
+    <script>
+        let domparser = new DOMParser();
+   const Span1 = document.querySelector("#Sp");
+   const Span2 = document.querySelector("#Sp-1");
+   const Span3 = document.querySelector("#Sp-2");
+   const Span4 = document.querySelector("#Sp-3");
+   const Span5 = document.querySelector("#Sp-4");
+   
+
+   let InfectedTotal, DeathTotal, RecoveredTotal, InfectedItaly, DeathItaly;
+
+
+   async function Load(){
+    const response = await fetch('https://cors-anywhere.herokuapp.com/https://www.worldometers.info/coronavirus/')
+    const Data = await response.text();
+    console.log(Data);
+    const DataDom = domparser.parseFromString(Data, 'text/html');
+    console.log(DataDom);
+    const DataSpan = DataDom.querySelectorAll('.maincounter-number span');
+console.log(DataSpan);
+
+     InfectedTotal = DataSpan[0].innerText;
+
+     DeathTotal = DataSpan[1].innerText;
+
+     RecoveredTotal = DataSpan[2].innerText;
+
+     console.log(RecoveredTotal);
+
+     console.log(InfectedTotal);
+
+     console.log(DeathTotal);
+
+     Span1.innerHTML = InfectedTotal;
+     Span2.innerHTML = DeathTotal;
+     Span3.innerHTML = RecoveredTotal;
+
+const table = DataDom.querySelectorAll("#table3 tbody tr");
+for(let i=0; i<table.length; i++){
+    const row = table[i];
+    const elements = row.querySelectorAll("td");
+    const Paesi = elements[0].innerText;
+    if(Paesi.trim() === 'Italy'){
+        InfectedItaly = elements[1].innerText;
+        DeathItaly = elements[3].innerText;
+        break;
+    }
+}
+
+Span4.innerHTML = InfectedItaly;
+Span5.innerHTML = DeathItaly;
+   }
+   Load();
+   const Intervallo = setInterval(Load, 2000);
+
+
+       
+    
+    
+    </script>
+    
+</body>
+</html>

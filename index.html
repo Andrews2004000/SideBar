@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>coronavirus LivE sTAT</title>
+</head>
+<body>
+    <div id="app">
+
+
+        <h1>Coronavirus Live Stats</h1>
+        <p> Total global Infected:<span id="totalInfected">0</span></p>
+
+    </div>
+
+    
+
+
+
+
+
+
+    <script>
+        let domparser = new DOMParser();
+        const TotalInfectedSpan = document.querySelector('#totalInfected')
+       async function load(){
+     const response =   await fetch('https://cors-anywhere.herokuapp.com/https://www.worldometers.info/coronavirus/')
+const Data = await response.text();
+console.log(Data);
+const DataDom = domparser.parseFromString(Data, 'text/html');
+console.log(DataDom);
+const DataSpan = DataDom.querySelector('.maincounter-number span' );
+console.log(DataSpan);
+const DataNumber = DataSpan.innerHTML;
+console.log(DataNumber);
+
+TotalInfectedSpan.innerHTML = DataNumber;
+
+
+
+
+        }
+load();
+
+    
+    
+    
+    </script>
+    
+</body>
+</html>
